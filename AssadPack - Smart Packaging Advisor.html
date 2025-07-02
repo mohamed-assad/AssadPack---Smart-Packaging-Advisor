@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Smart Flexible Packaging Troubleshooter - Mohamed Assad</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f6f9fb; color: #333; margin: 0; padding: 20px; }
+    .container { max-width: 900px; margin: 0 auto; background: white; padding: 20px; border-radius: 12px; box-shadow: 0 0 15px rgba(0,0,0,0.1); }
+    h1 { text-align: center; color: #1d3557; }
+    select, button, textarea { width: 100%; margin-top: 12px; padding: 10px; border: 1px solid #ccc; border-radius: 8px; font-size: 16px; }
+    .output { margin-top: 20px; background: #f1f1f1; padding: 20px; border-radius: 10px; }
+    label { font-weight: bold; margin-top: 20px; display: block; }
+    .footer { margin-top: 30px; text-align: center; font-size: 14px; color: #555; }
+    .footer a { color: #1d3557; text-decoration: none; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>AssadPack - Smart Packaging Advisor</h1>
+
+    <label for="userType">Are you a packaging buyer or supplier?</label>
+    <select id="userType">
+      <option value="buyer">Packaging Buyer</option>
+      <option value="supplier">Packaging Supplier</option>
+    </select>
+
+    <label for="problemSelect">Choose your most frequent packaging issue:</label>
+    <select id="problemSelect"></select>
+
+    <div class="output" id="solutionBox">
+      <em>Select a problem to view expert insights and solutions...</em>
+    </div>
+
+    <div class="footer">
+      Developed by <strong>Mohamed Assad</strong> | <a href="https://www.linkedin.com/in/mohamed-assad-%D9%85%D8%AD%D9%85%D8%AF-%D8%A3%D8%B3%D8%B9%D8%AF-308159a4/" target="_blank">Connect on LinkedIn</a>
+    </div>
+  </div>
+
+  <script>
+    const problemsDB = {
+      buyer: {
+        "Poor Seal Integrity": `
+          <strong>Description:</strong> Packaging doesn't seal properly, risking contamination.<br/>
+          <strong>Main Causes:</strong> Incompatible film/machine, contaminated seal area, wrong sealant.<br/>
+          <strong>Solutions:</strong> Share machine specs with supplier, request seal strength tests, run trials.<br/>
+          <strong>Expert Tip:</strong> Ask for a CoA with seal performance KPIs before bulk production.
+        `,
+        "Weak Puncture Resistance": `
+          <strong>Description:</strong> Film tears or punctures during handling.<br/>
+          <strong>Main Causes:</strong> Wrong film type, sharp contents, low micron.<br/>
+          <strong>Solutions:</strong> Use Nylon or HDPE layers, raise gauge, run drop tests.<br/>
+          <strong>Expert Tip:</strong> Ask for puncture resistance results and simulate stress scenarios.
+        `,
+        "Print Quality Issues": `
+          <strong>Description:</strong> Color mismatch or blurry print.<br/>
+          <strong>Main Causes:</strong> Wrong file format, poor ink, no Pantone codes.<br/>
+          <strong>Solutions:</strong> Send vector files, ask for on-material proofing.<br/>
+          <strong>Expert Tip:</strong> Use color swatch matching tools and communicate tolerances.
+        `,
+        "Weak Barrier Properties": `
+          <strong>Description:</strong> Product deteriorates quickly.<br/>
+          <strong>Main Causes:</strong> Wrong material structure, thin barrier layer.<br/>
+          <strong>Solutions:</strong> Use AL, MetPET or EVOH layers based on shelf life needs.<br/>
+          <strong>Expert Tip:</strong> Get OTR/WVTR reports from supplier.
+        `
+      },
+      supplier: {
+        "Inconsistent Raw Materials": `
+          <strong>Description:</strong> Film or ink batches differ in quality.<br/>
+          <strong>Main Causes:</strong> Poor QC on incoming goods, unreliable suppliers.<br/>
+          <strong>Solutions:</strong> Run IQC tests, request CoAs, audit vendors.<br/>
+          <strong>Expert Tip:</strong> Build supplier scorecards and develop tier 1 sources.
+        `,
+        "Color Matching Trouble": `
+          <strong>Description:</strong> Can't match customer print expectations.<br/>
+          <strong>Main Causes:</strong> Wrong Pantone, misregistration, film shrinkage.<br/>
+          <strong>Solutions:</strong> Calibrate press, ask for vector files and Pantone.<br/>
+          <strong>Expert Tip:</strong> Use spectrophotometers and digital print simulators.
+        `,
+        "Delamination Issues": `
+          <strong>Description:</strong> Film layers peel apart.<br/>
+          <strong>Main Causes:</strong> Wrong adhesive, dirty film, bad pressure/temp.<br/>
+          <strong>Solutions:</strong> Calibrate laminator, clean surfaces, test bond strength.<br/>
+          <strong>Expert Tip:</strong> Always test peel strength after lamination.
+        `,
+        "Excessive Production Waste": `
+          <strong>Description:</strong> High scrap rates on press or cutter.<br/>
+          <strong>Main Causes:</strong> Bad setup, poor training, machine faults.<br/>
+          <strong>Solutions:</strong> Apply lean, train staff, preventive maintenance.<br/>
+          <strong>Expert Tip:</strong> Track KPIs on waste and apply Six Sigma analysis.
+        `
+      }
+    };
+
+    const userTypeSelect = document.getElementById('userType');
+    const problemSelect = document.getElementById('problemSelect');
+    const solutionBox = document.getElementById('solutionBox');
+
+    function populateProblems(userType) {
+      problemSelect.innerHTML = '';
+      Object.keys(problemsDB[userType]).forEach(problem => {
+        const opt = document.createElement('option');
+        opt.value = problem;
+        opt.innerText = problem;
+        problemSelect.appendChild(opt);
+      });
+      showSolution(userType, problemSelect.value);
+    }
+
+    function showSolution(userType, problem) {
+      solutionBox.innerHTML = problemsDB[userType][problem];
+    }
+
+    userTypeSelect.addEventListener('change', () => {
+      populateProblems(userTypeSelect.value);
+    });
+
+    problemSelect.addEventListener('change', () => {
+      showSolution(userTypeSelect.value, problemSelect.value);
+    });
+
+    // Initialize on load
+    populateProblems(userTypeSelect.value);
+  </script>
+</body>
+</html>
